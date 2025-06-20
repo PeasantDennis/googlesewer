@@ -1,29 +1,24 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <title>GoogleSewer.com – We Reverse the Mould</title>
-    <link rel="stylesheet" href="style.css">
-    <link rel="icon" type="image/x-icon" href="favicon.ico">
+  <meta charset="UTF-8">
+  <title>Googlesewer Search</title>
+  <style>
+    body { font-family: sans-serif; background: #111; color: #eee; padding: 2em; }
+    input[type="text"] { width: 70%; padding: 0.5em; font-size: 1.2em; }
+    button { padding: 0.6em 1em; margin-left: 1em; }
+    .result { margin: 1em 0; padding: 1em; background: #222; border-left: 5px solid #444; }
+    a { color: #8ef; }
+  </style>
 </head>
 <body>
-    <div class="header">
-        <h1>GoogleSewer.com</h1>
-        <div class="tagline">We reverse the mould.</div>
-    </div>
-    <div class="search-box">
-        <input type="text" placeholder="Search the sewer...">
-        <button>Flush</button>
-    </div>
-    <div class="slogans">
-        <p>“If it’s not in the mainstream, it’s in our sewer.”</p>
-        <p>“Get the shit that don’t stink.”</p>
-        <p>“Search the sewer for the shit they don’t want you to see.”</p>
-        <p>“It’s not funny what you find when you’re not looking.”</p>
-        <p>“When you don’t know shit.”</p>
-    </div>
-    <div class="footer">
-        &copy; 2025 GoogleSewer.com – A cultural reversal of algorithmic rot. | @PeasantDennis
-    </div>
+  <h1>💩 Googlesewer</h1>
+  <p>We reverse the mould. Get the shit that don’t stink.</p>
+  <input type="text" id="query" placeholder="Search the sewer...">
+  <button onclick="search()">Flush It</button>
+  <div id="results"></div>
+
+  <script src="script.js"></script>
 </body>
 </html>
