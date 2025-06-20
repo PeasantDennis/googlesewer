@@ -10,7 +10,7 @@ exports.handler = async function (event, context) {
     };
   }
 
-  const apiKey = "YOUR_SERPAPI_KEY"; // Replace this
+  const apiKey = "7869dd041ee71d017b26d1bac59b49182cc7e50db168eb3ec9005686b19fcaed"; // Replace this
   const url = `https://serpapi.com/search.json?q=${encodeURIComponent(query)}&api_key=${apiKey}&num=10`;
 
   try {
