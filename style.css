@@ -1,0 +1,58 @@
+
+body {
+    background-color: #1c1c1c;
+    color: #e0e0e0;
+    font-family: "Courier New", Courier, monospace;
+    padding: 40px;
+    line-height: 1.6;
+}
+.header {
+    text-align: center;
+    margin-bottom: 40px;
+}
+.header h1 {
+    font-size: 3em;
+    color: #bada55;
+    text-shadow: 2px 2px #000;
+}
+.tagline {
+    font-size: 1.5em;
+    color: #ff4500;
+    margin-bottom: 20px;
+}
+.search-box {
+    text-align: center;
+    margin: 30px auto;
+}
+.search-box input[type="text"] {
+    width: 60%;
+    padding: 10px;
+    font-size: 1em;
+    border: none;
+    background-color: #333;
+    color: #fff;
+}
+.search-box button {
+    padding: 10px 20px;
+    font-size: 1em;
+    background-color: #bada55;
+    border: none;
+    color: #000;
+    cursor: pointer;
+    margin-left: 10px;
+}
+.slogans {
+    margin-top: 40px;
+    text-align: center;
+}
+.slogans p {
+    margin: 8px 0;
+    font-size: 1.2em;
+    color: #aaa;
+}
+.footer {
+    text-align: center;
+    margin-top: 60px;
+    font-size: 0.9em;
+    color: #555;
+}
