@@ -1,43 +1,62 @@
-<h1>GoogleSewer</h1>
-
-<form id="search-form">
-  <input type="text" id="search-input" placeholder="Sewage Search..." />
-  <button type="submit">Flush</button>
-</form>
-
-<div id="results"></div>
-
-<script>
-  document.getElementById("search-form").addEventListener("submit", async (e) => {
-    e.preventDefault();
-    const query = document.getElementById("search-input").value;
-    const resultsDiv = document.getElementById("results");
-    resultsDiv.innerHTML = "<p>Scraping the Sewer...</p>";
-
-    try {
-      const res = await fetch(`/.netlify/functions/search?q=${encodeURIComponent(query)}`);
-      const data = await res.json();
-      resultsDiv.innerHTML = "";
-
-      if (data.results && data.results.length > 0) {
-        data.results.forEach((result) => {
-          const resultHTML = `
-            <div style="margin-bottom: 1rem; border-bottom: 1px solid #ccc;">
-              <h3><a href="${result.link}" target="_blank">${result.title}</a></h3>
-              <p>${result.snippet || ''}</p>
-              <small>Score: ${result.score}</small>
-            </div>
-          `;
-          resultsDiv.innerHTML += resultHTML;
-        });
-      } else {
-        resultsDiv.innerHTML = "<p>No sewage found.</p>";
-      }
-    } catch (err) {
-      resultsDiv.innerHTML = `<p>Error dragging the net: ${err.message}</p>`;
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Google Sewer</title>
+  <style>
+    body {
+      background-color: #000;
+      color: #39ff14;
+      font-family: 'Courier New', monospace;
+      padding: 2rem;
+      text-align: center;
     }
-  });
-</script>
+    h1 {
+      font-size: 3rem;
+      margin-bottom: 0.5rem;
+    }
+    p {
+      font-size: 1.5rem;
+      margin: 0.5rem auto;
+    }
+    a {
+      color: #ff4444;
+      font-weight: bold;
+      text-decoration: none;
+      border: 2px solid #ff4444;
+      padding: 0.5rem 1rem;
+      display: inline-block;
+      margin-top: 2rem;
+      transition: all 0.2s ease-in-out;
+    }
+    a:hover {
+      background-color: #ff4444;
+      color: #000;
+    }
+    .slogan {
+      font-size: 1.1rem;
+      font-style: italic;
+      margin-top: 1.5rem;
+      color: #aaa;
+    }
+    .ascii {
+      font-size: 0.8rem;
+      color: #555;
+      margin-top: 3rem;
+      white-space: pre-wrap;
+    }
+  </style>
+</head>
+<body>
+  <h1>🕳️ GOOGLE SEWER</h1>
+  <p>We Reverse the Mould.</p>
+  <p>Get the Shit That Don’t Stink.</p>
+  <p class="slogan">The more it's repeated, the less we believe.</p>
 
+  <a href="https://deepsewer.org" target="_blank">DESCEND</a>
 
-
+  <div class="ascii">
+    <pre>
+      ⠀⠀⠀⣠⣤⣤⣤⣀⠀⠀⠀⢀⡀⠀⠀⠀⠀⠀⠀⠀⠀
+      ⠀⠀⣼⠉⠀⠀⠀⠉⢿⣦
