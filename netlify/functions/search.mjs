@@ -33,7 +33,7 @@ export async function handler(event, context) {
 
   return {
   statusCode: 200,
-  body: JSON.stringify({ results: scored }, null, 2),
+  body: JSON.stringify({ results: filtered }, null, 2),
 };
 }
 
