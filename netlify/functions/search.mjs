@@ -1,6 +1,6 @@
 import fetch from 'node-fetch';
 
-export async function handler(event) {
+export async function handler(event, context) {
   const query = event.queryStringParameters.q;
 
   if (!query) {
@@ -11,7 +11,7 @@ export async function handler(event) {
   }
 
   const apiKey = "7869dd041ee71d017b26d1bac59b49182cc7e50db168eb3ec9005686b19fcaed";
- 
+
   let allResults = [];
   let start = 0;
 
