@@ -20,7 +20,7 @@
       resultsDiv.innerHTML = ""; // clear loading text
 
       if (data.organic_results && data.organic_results.length > 0) {
-        data.organic_results.forEach((result) => {
+        [...data.organic_results].reverse().forEach((result) => {
           const resultHTML = `
             <div style="margin-bottom: 1rem; border-bottom: 1px solid #ccc;">
               <h3><a href="${result.link}" target="_blank">${result.title}</a></h3>
