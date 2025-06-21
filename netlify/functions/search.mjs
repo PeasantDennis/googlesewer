@@ -66,3 +66,4 @@ function applyInversionFilters(results) {
     return { ...result, score };
   }).sort((a, b) => b.score - a.score); // Higher score first = more truthy
 }
+
