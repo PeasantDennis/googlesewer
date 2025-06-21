@@ -1,6 +1,6 @@
 import fetch from 'node-fetch';
 
-export async function handler(event, context) {
+export async function handler(event) {
   const query = event.queryStringParameters.q;
 
   if (!query) {
@@ -10,8 +10,7 @@ export async function handler(event, context) {
     };
   }
 
-  const apiKey = '7869dd041ee71d017b26d1bac59b49182cc7e50db168eb3ec9005686b19fcaed';
-
+  const apiKey = 'YOUR_SERPAPI_KEY_HERE'; // Replace this with your actual SerpAPI key
   let allResults = [];
   let start = 0;
 
@@ -29,43 +28,36 @@ export async function handler(event, context) {
     start += 10;
   }
 
-  allResults.reverse();
-  const filteredResults = applyInversionFilters(allResults);
+  // 🧠 Score and sort
+  const scored = applyInversionFilters(allResults).reverse(); // Reverse for sewer effect
 
   return {
     statusCode: 200,
-    body: JSON.stringify({ inverted_results: filteredResults }, null, 2),
+    body: JSON.stringify({ results: scored }, null, 2),
   };
 }
 
-// 🧠 Sewer Logic
 function applyInversionFilters(results) {
-  return results
-    .map(result => {
-      const url = result.link || "";
-      const snippet = (result.snippet || "").toLowerCase();
-      const domain = new URL(url).hostname.replace("www.", "");
+  return results.map(result => {
+    const url = result.link || '';
+    const snippet = (result.snippet || '').toLowerCase();
+    const domain = new URL(url).hostname.replace(/^www\./, '');
 
-      let score = 0;
+    let score = 0;
 
-      // 🔴 Ego-Noise triggers
-      const egoTriggers = ["you won’t believe", "shocking", "revealed", "secret", "experts say"];
-      egoTriggers.forEach(trigger => {
-        if (snippet.includes(trigger)) score -= 2;
-      });
+    // 🟡 Ego triggers
+    const clickbait = ["you won’t believe", "shocking", "revealed", "secret", "experts say"];
+    clickbait.forEach(trigger => { if (snippet.includes(trigger)) score -= 2; });
 
-      // 🟡 Commercial trash
-      const commercialTriggers = ["best price", "buy now", "sponsored"];
-      if (url.includes("/buy/") || url.includes("affiliate") || commercialTriggers.some(p => snippet.includes(p))) {
-        score -= 3;
-      }
+    // 🔴 Commercial triggers
+    const ads = ["buy now", "sponsored", "sale"];
+    if (url.includes("/buy/") || url.includes("affiliate") || ads.some(t => snippet.includes(t))) score -= 3;
 
-      // 🔵 Truth signal domains
-      const goodDomains = ["medium.com", "substack.com", "theconversation.com", "archive.org"];
-      if (goodDomains.some(good => domain.endsWith(good))) score += 3;
-      if (domain.endsWith(".org") || domain.endsWith(".edu")) score += 2;
+    // 🔵 Truthy sources
+    const goodDomains = ["medium.com", "substack.com", "archive.org", "theconversation.com"];
+    if (goodDomains.some(g => domain.endsWith(g))) score += 3;
+    if (domain.endsWith('.org') || domain.endsWith('.edu')) score += 2;
 
-      return { ...result, score };
-    })
-    .sort((a, b) => a.score - b.score); // Most corrupted fall to bottom
+    return { ...result, score };
+  }).sort((a, b) => b.score - a.score); // Higher score = more truthful
 }
