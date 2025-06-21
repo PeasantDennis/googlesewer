@@ -29,15 +29,15 @@ export async function handler(event, context) {
     start += 10;
   }
 
-  // 🧠 Score and sort
-  const scored = applyInversionFilters(allResults).reverse(); // Reverse for sewer effect
+  const filtered = applyInversionFilters(allResults);
 
   return {
     statusCode: 200,
-    body: JSON.stringify({ results: scored }, null, 2),
+    body: JSON.stringify({ inverted_results: filtered }, null, 2),
   };
 }
 
+// 🧠 Scoring engine for the Sewerverse
 function applyInversionFilters(results) {
   return results.map(result => {
     const url = result.link || '';
@@ -46,19 +46,23 @@ function applyInversionFilters(results) {
 
     let score = 0;
 
-    // 🟡 Ego triggers
-    const clickbait = ["you won’t believe", "shocking", "revealed", "secret", "experts say"];
-    clickbait.forEach(trigger => { if (snippet.includes(trigger)) score -= 2; });
+    // 🔴 Ego triggers
+    const egoTriggers = ["you won’t believe", "shocking", "revealed", "secret", "experts say"];
+    egoTriggers.forEach(trigger => {
+      if (snippet.includes(trigger)) score -= 2;
+    });
 
-    // 🔴 Commercial triggers
+    // 🟡 Commercial triggers
     const ads = ["buy now", "sponsored", "sale"];
-    if (url.includes("/buy/") || url.includes("affiliate") || ads.some(t => snippet.includes(t))) score -= 3;
+    if (url.includes("/buy/") || url.includes("affiliate") || ads.some(t => snippet.includes(t))) {
+      score -= 3;
+    }
 
-    // 🔵 Truthy sources
+    // 🟢 Truthy signals
     const goodDomains = ["medium.com", "substack.com", "archive.org", "theconversation.com"];
     if (goodDomains.some(g => domain.endsWith(g))) score += 3;
     if (domain.endsWith('.org') || domain.endsWith('.edu')) score += 2;
 
     return { ...result, score };
-  }).sort((a, b) => b.score - a.score); // Higher score = more truthful
+  }).sort((a, b) => b.score - a.score); // Higher score first = more truthy
 }
