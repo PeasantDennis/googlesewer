@@ -31,8 +31,8 @@ export async function handler(event, context) {
 
   allResults.reverse(); // invert the order
 
-  return {
-    statusCode: 200,
-    body: JSON.stringify({ inverted_results: allResults }, null, 2), // pretty print
-  };
+return {
+  statusCode: 200,
+  body: JSON.stringify({ organic_results: allResults }, null, 2),
+};
 }
