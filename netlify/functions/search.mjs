@@ -15,7 +15,7 @@ export async function handler(event, context) {
   let allResults = [];
   let start = 0;
 
-  for (let page = 0; page < 10; page++) {  // 10 pages x 10 results = 100
+  for (let page = 0; page < 10; page++) {
     const url = `https://serpapi.com/search.json?q=${encodeURIComponent(query)}&api_key=${apiKey}&num=10&start=${start}`;
     const response = await fetch(url);
     const data = await response.json();
@@ -23,16 +23,17 @@ export async function handler(event, context) {
     if (data.organic_results && data.organic_results.length > 0) {
       allResults.push(...data.organic_results);
     } else {
-      break; // stop if no more results
+      break;
     }
 
     start += 10;
   }
 
-  allResults.reverse(); // invert the order
+  allResults.reverse();
 
-return {
-  statusCode: 200,
-  body: JSON.stringify({ organic_results: allResults }, null, 2),
-};
+  return {
+    statusCode: 200,
+    body: JSON.stringify({ inverted_results: allResults }, null, 2),
+  };
 }
+
