@@ -11,8 +11,7 @@ export async function handler(event, context) {
   }
 
   const apiKey = "7869dd041ee71d017b26d1bac59b49182cc7e50db168eb3ec9005686b19fcaed";
-  const url = `https://serpapi.com/search.json?q=${encodeURIComponent(query)}&api_key=${apiKey}&num=10`;
-
+  const url = `https://serpapi.com/search.json?q=${encodeURIComponent(query)}&api_key=${apiKey}&num=100`;
   try {
     const response = await fetch(url);
     const data = await response.json();
