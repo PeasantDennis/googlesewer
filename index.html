@@ -1,59 +1,40 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>GoogleSewer</title>
-  <style>
-    body {
-      font-family: sans-serif;
-      background: #111;
-      color: #eee;
-      padding: 2rem;
-      max-width: 800px;
-      margin: auto;
-    }
-    input[type="text"] {
-      width: 100%;
-      padding: 0.75rem;
-      font-size: 1.2rem;
-      margin-bottom: 1rem;
-    }
-    pre {
-      background: #222;
-      padding: 1rem;
-      white-space: pre-wrap;
-      word-wrap: break-word;
-    }
-  </style>
-</head>
-<body>
-  <h1>GoogleSewer</h1>
-  <input type="text" id="searchBox" placeholder="Type a search term...">
+<h1>GoogleSewer</h1>
+
+<form id="search-form">
+  <input type="text" id="search-input" placeholder="Sewage Search..." />
+  <button type="submit">Flush</button>
+</form>
+
 <div id="results"></div>
-  <pre id="results">Results will show here...</pre>
 
-  <script>
-    const input = document.getElementById('searchBox');
-    const results = document.getElementById('results');
+<script>
+  document.getElementById("search-form").addEventListener("submit", async (e) => {
+    e.preventDefault();
+    const query = document.getElementById("search-input").value;
+    const resultsDiv = document.getElementById("results");
+    resultsDiv.innerHTML = "<p>Scraping the Sewer...</p>";
 
-    input.addEventListener('keyup', async (e) => {
-      if (e.key === 'Enter') {
-        const query = input.value.trim();
-        if (!query) return;
+    try {
+      const res = await fetch(`/.netlify/functions/search?q=${encodeURIComponent(query)}`);
+      const data = await res.json();
+      resultsDiv.innerHTML = ""; // clear loading text
 
-        results.textContent = 'Searching...';
-
-        try {
-          const response = await fetch(`/.netlify/functions/search?q=${encodeURIComponent(query)}`);
-          const data = await response.json();
-          results.textContent = JSON.stringify(data, null, 2);
-        } catch (err) {
-          results.textContent = 'Error: ' + err.message;
-        }
+      if (data.organic_results && data.organic_results.length > 0) {
+        data.organic_results.forEach((result) => {
+          const resultHTML = `
+            <div style="margin-bottom: 1rem; border-bottom: 1px solid #ccc;">
+              <h3><a href="${result.link}" target="_blank">${result.title}</a></h3>
+              <p>${result.snippet || ''}</p>
+            </div>
+          `;
+          resultsDiv.innerHTML += resultHTML;
+        });
+      } else {
+        resultsDiv.innerHTML = "<p>No sewage found.</p>";
       }
-    });
-  </script>
-</body>
-</html>
+    } catch (err) {
+      resultsDiv.innerHTML = `<p>Error dragging the net: ${err.message}</p>`;
+    }
+  });
+</script>
 
