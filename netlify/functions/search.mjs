@@ -10,21 +10,29 @@ export async function handler(event, context) {
     };
   }
 
-  const apiKey = "7869dd041ee71d017b26d1bac59b49182cc7e50db168eb3ec9005686b19fcaed";
-  const url = `https://serpapi.com/search.json?q=${encodeURIComponent(query)}&api_key=${apiKey}&num=100`;
-  try {
+  const apiKey = 'YOUR_SERPAPI_KEY'; // replace this with your actual SerpAPI key
+
+  let allResults = [];
+  let start = 0;
+
+  for (let page = 0; page < 10; page++) {  // 10 pages x 10 results = 100
+    const url = `https://serpapi.com/search.json?q=${encodeURIComponent(query)}&api_key=${apiKey}&num=10&start=${start}`;
     const response = await fetch(url);
     const data = await response.json();
 
-    return {
-      statusCode: 200,
-      body: JSON.stringify(data),
-    };
-  } catch (err) {
-    return {
-      statusCode: 500,
-      body: JSON.stringify({ error: "Failed to fetch data", details: err.message }),
-    };
-  }
-}
+    if (data.organic_results && data.organic_results.length > 0) {
+      allResults.push(...data.organic_results);
+    } else {
+      break; // stop if no more results
+    }
 
+    start += 10;
+  }
+
+  allResults.reverse(); // invert the order
+
+  return {
+    statusCode: 200,
+    body: JSON.stringify({ inverted_results: allResults }, null, 2), // pretty print
+  };
+}
