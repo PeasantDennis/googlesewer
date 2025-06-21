@@ -4,10 +4,11 @@ export async function handler(event, context) {
   const query = event.queryStringParameters.q;
 
   if (!query) {
-    return {
-      statusCode: 400,
-      body: JSON.stringify({ error: "No search term provided" }),
-    };
+   return {
+  statusCode: 200,
+  body: JSON.stringify({ results: filtered }, null, 2),
+};
+
   }
 
   const apiKey = "7869dd041ee71d017b26d1bac59b49182cc7e50db168eb3ec9005686b19fcaed";
