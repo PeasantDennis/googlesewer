@@ -29,7 +29,6 @@ export async function handler(event, context) {
     start += 10;
   }
 
-  // Reverse and apply inversion filters
   allResults.reverse();
   const filteredResults = applyInversionFilters(allResults);
 
@@ -70,4 +69,3 @@ function applyInversionFilters(results) {
     })
     .sort((a, b) => a.score - b.score); // Most corrupted fall to bottom
 }
-
