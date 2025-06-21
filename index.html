@@ -17,14 +17,15 @@
     try {
       const res = await fetch(`/.netlify/functions/search?q=${encodeURIComponent(query)}`);
       const data = await res.json();
-      resultsDiv.innerHTML = ""; // clear loading text
+      resultsDiv.innerHTML = "";
 
-      if (data.organic_results && data.organic_results.length > 0) {
-        data.organic_results.forEach((result) => {
+      if (data.results && data.results.length > 0) {
+        data.results.forEach((result) => {
           const resultHTML = `
             <div style="margin-bottom: 1rem; border-bottom: 1px solid #ccc;">
               <h3><a href="${result.link}" target="_blank">${result.title}</a></h3>
               <p>${result.snippet || ''}</p>
+              <small>Score: ${result.score}</small>
             </div>
           `;
           resultsDiv.innerHTML += resultHTML;
@@ -37,5 +38,6 @@
     }
   });
 </script>
+
 
 
