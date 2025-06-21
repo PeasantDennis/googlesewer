@@ -32,9 +32,9 @@ export async function handler(event, context) {
   const filtered = applyInversionFilters(allResults);
 
   return {
-    statusCode: 200,
-    body: JSON.stringify({ inverted_results: filtered }, null, 2),
-  };
+  statusCode: 200,
+  body: JSON.stringify({ results: scored }, null, 2),
+};
 }
 
 // 🧠 Scoring engine for the Sewerverse
