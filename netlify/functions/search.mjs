@@ -20,8 +20,8 @@ export async function handler(event, context) {
     const response = await fetch(url);
     const data = await response.json();
 
-    if (data.inverted_results && data.inverted_results.length > 0) {
-  data.inverted_results.forEach((result) => {
+    if (data.organic_results && data.organic_results.length > 0) {
+      allResults.push(...data.organic_results);
     } else {
       break;
     }
@@ -70,3 +70,4 @@ function applyInversionFilters(results) {
     })
     .sort((a, b) => a.score - b.score); // Most corrupted fall to bottom
 }
+
