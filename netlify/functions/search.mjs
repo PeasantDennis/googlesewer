@@ -29,11 +29,44 @@ export async function handler(event, context) {
     start += 10;
   }
 
+  // Reverse and apply inversion filters
   allResults.reverse();
+  const filteredResults = applyInversionFilters(allResults);
 
   return {
     statusCode: 200,
-    body: JSON.stringify({ inverted_results: allResults }, null, 2),
+    body: JSON.stringify({ inverted_results: filteredResults }, null, 2),
   };
 }
 
+// 🧠 Sewer Logic
+function applyInversionFilters(results) {
+  return results
+    .map(result => {
+      const url = result.link || "";
+      const snippet = (result.snippet || "").toLowerCase();
+      const domain = new URL(url).hostname.replace("www.", "");
+
+      let score = 0;
+
+      // 🔴 Ego-Noise triggers
+      const egoTriggers = ["you won’t believe", "shocking", "revealed", "secret", "experts say"];
+      egoTriggers.forEach(trigger => {
+        if (snippet.includes(trigger)) score -= 2;
+      });
+
+      // 🟡 Commercial trash
+      const commercialTriggers = ["best price", "buy now", "sponsored"];
+      if (url.includes("/buy/") || url.includes("affiliate") || commercialTriggers.some(p => snippet.includes(p))) {
+        score -= 3;
+      }
+
+      // 🔵 Truth signal domains
+      const goodDomains = ["medium.com", "substack.com", "theconversation.com", "archive.org"];
+      if (goodDomains.some(good => domain.endsWith(good))) score += 3;
+      if (domain.endsWith(".org") || domain.endsWith(".edu")) score += 2;
+
+      return { ...result, score };
+    })
+    .sort((a, b) => a.score - b.score); // Most corrupted fall to bottom
+}
