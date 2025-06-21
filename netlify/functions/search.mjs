@@ -1,6 +1,6 @@
 import fetch from 'node-fetch';
 
-export async function handler(event, context) {
+export async function handler(event) {
   const query = event.queryStringParameters.q;
 
   if (!query) {
@@ -37,7 +37,6 @@ export async function handler(event, context) {
   };
 }
 
-// 🧠 Scoring engine for the Sewerverse
 function applyInversionFilters(results) {
   return results.map(result => {
     const url = result.link || '';
@@ -46,24 +45,20 @@ function applyInversionFilters(results) {
 
     let score = 0;
 
-    // 🔴 Ego triggers
     const egoTriggers = ["you won’t believe", "shocking", "revealed", "secret", "experts say"];
     egoTriggers.forEach(trigger => {
       if (snippet.includes(trigger)) score -= 2;
     });
 
-    // 🟡 Commercial triggers
     const ads = ["buy now", "sponsored", "sale"];
     if (url.includes("/buy/") || url.includes("affiliate") || ads.some(t => snippet.includes(t))) {
       score -= 3;
     }
 
-    // 🟢 Truthy signals
     const goodDomains = ["medium.com", "substack.com", "archive.org", "theconversation.com"];
     if (goodDomains.some(g => domain.endsWith(g))) score += 3;
     if (domain.endsWith('.org') || domain.endsWith('.edu')) score += 2;
 
     return { ...result, score };
-  }).sort((a, b) => b.score - a.score); // Higher score first = more truthy
+  }).sort((a, b) => b.score - a.score); // truth on top
 }
-
