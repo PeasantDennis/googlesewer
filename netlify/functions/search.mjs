@@ -1,5 +1,19 @@
 // Select elements
-const flushBtn = document.getElementById("flushBtn");
+flushBtn.addEventListener("click", async () => {
+    const query = searchInput.value.trim();
+    if (!query) return;
+
+    resultsList.innerHTML = "<p>Flushing results...</p>";
+
+    try {
+        await searchDuckDuckGo(query);
+        askPepeTreBtn.style.display = "block"; // Show Pepe Tre button after results load
+    } catch (error) {
+        console.warn("DuckDuckGo failed, switching to Wikipedia.");
+        await searchWikipedia(query);
+        askPepeTreBtn.style.display = "block"; // Show Pepe Tre button after Wikipedia fallback
+    }
+});
 const searchInput = document.getElementById("searchInput");
 const resultsList = document.getElementById("resultsList");
 
