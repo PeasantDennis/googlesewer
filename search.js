@@ -9,6 +9,7 @@ async function searchWikipedia(query) {
     try {
         const response = await fetch(`https://en.wikipedia.org/w/api.php?action=query&list=search&srsearch=${query}&format=json&origin=*`);
         const data = await response.json();
+console.log("Proxy response:", data);
 
         resultsList.innerHTML = "";
         data.query.search.slice(0, 5).forEach(result => {
