@@ -72,4 +72,36 @@ button:hover {
     margin: 5px;
     border-left: 5px solid #00ff00;
 }
+/* Pepe Tre's Fake News Styling */
+.fake-news-container {
+    background: #222;
+    padding: 15px;
+    margin-top: 20px;
+    border-left: 5px solid #ff00ff;
+    font-style: italic;
+    animation: glitch 1s infinite alternate;
+}
+
+/* Glitch Effect */
+@keyframes glitch {
+    0% { transform: skew(-2deg); }
+    100% { transform: skew(2deg); }
+}
+
+/* Mobile Responsiveness */
+@media (max-width: 600px) {
+    .container {
+        width: 90%;
+        padding: 10px;
+    }
+
+    #searchInput {
+        width: 100%;
+    }
+
+    button {
+        width: 100%;
+        padding: 12px;
+    }
+}
 
