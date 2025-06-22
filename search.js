@@ -58,7 +58,20 @@ flushBtn.addEventListener("click", async () => {
     const query = searchInput.value.trim();
     if (!query) return;
 
+    flushBtn.disabled = true; // Disable button during fetch
     resultsList.innerHTML = "<p>Flushing results...</p>";
+
+    try {
+        await searchDuckDuckGo(query);
+        askPepeTreBtn.style.display = "block";
+    } catch (error) {
+        console.warn("DuckDuckGo failed, switching to Wikipedia.");
+        await searchWikipedia(query);
+        askPepeTreBtn.style.display = "block";
+    } finally {
+        flushBtn.disabled = false; // Re-enable after done
+    }
+});
 
     try {
         await searchDuckDuckGo(query);
