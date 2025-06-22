@@ -1,107 +1,66 @@
-/* General Page Styling */
+/* GoogleSewer 2.0: Sewer Chic Aesthetic */
+
 body {
-    background-color: #121212;
-    color: #d4d4d4;
+    background-color: #0f0f0f;
+    color: #f0f0f0;
     font-family: 'Courier New', monospace;
-    text-align: center;
     margin: 0;
-    padding: 0;
+    padding: 20px;
+    background-image: radial-gradient(circle at center, #1a1a1a, #000000 80%);
 }
 
-/* Container */
 .container {
     max-width: 600px;
-    margin: 50px auto;
-    padding: 20px;
-    background: #1e1e1e;
-    border-radius: 10px;
-    box-shadow: 0px 0px 10px rgba(0, 255, 0, 0.3);
+    margin: 0 auto;
+    padding: 40px;
+    background-color: #151515;
+    border: 2px solid #444;
+    box-shadow: 0 0 10px #00ff99, 0 0 40px #ff00ff33;
+    border-radius: 8px;
 }
 
-/* Title */
 h1 {
-    font-size: 2em;
-    color: #00ff00;
+    font-size: 2.4em;
+    text-align: center;
+    color: #ff00ff;
+    text-shadow: 0 0 5px #ff00ff, 0 0 10px #00ffd5;
 }
 
-/* Search Bar */
-#searchInput {
-    width: 80%;
-    padding: 10px;
-    margin: 10px 0;
-    border: 2px solid #00ff00;
-    background: #000;
-    color: #d4d4d4;
+h2 {
+    color: #00ff99;
+    margin-top: 30px;
+    border-bottom: 1px solid #00ff99;
+}
+
+input[type="text"] {
+    width: 100%;
+    padding: 12px;
     font-size: 1em;
+    background-color: #222;
+    color: #f0f0f0;
+    border: 2px solid #00ffd5;
+    border-radius: 5px;
+    margin-top: 15px;
+    margin-bottom: 15px;
 }
 
-/* Buttons */
 button {
-    background: #00ff00;
-    color: #000;
+    background-color: #ff00ff;
+    color: #fff;
     border: none;
-    padding: 10px 15px;
+    padding: 12px 20px;
     font-size: 1em;
+    border-radius: 5px;
     cursor: pointer;
-    margin: 5px;
-    transition: 0.3s;
+    margin: 5px 5px 10px 0;
+    box-shadow: 0 0 6px #ff00ff55;
+    transition: background-color 0.2s, transform 0.1s;
 }
 
 button:hover {
-    background: #ff00ff;
+    background-color: #e100e1;
+    transform: scale(1.05);
 }
 
-/* Oracle Selection */
-.oracle-selection {
-    margin-top: 20px;
-}
-
-.oracle-selection h2 {
-    color: #ff00ff;
-}
-
-/* Results List */
-#resultsList {
-    list-style: none;
-    padding: 0;
-}
-
-#resultsList li {
-    background: #222;
-    padding: 10px;
-    margin: 5px;
-    border-left: 5px solid #00ff00;
-}
-/* Pepe Tre's Fake News Styling */
-.fake-news-container {
-    background: #222;
-    padding: 15px;
-    margin-top: 20px;
-    border-left: 5px solid #ff00ff;
-    font-style: italic;
-    animation: glitch 1s infinite alternate;
-}
-
-/* Glitch Effect */
-@keyframes glitch {
-    0% { transform: skew(-2deg); }
-    100% { transform: skew(2deg); }
-}
-
-/* Mobile Responsiveness */
-@media (max-width: 600px) {
-    .container {
-        width: 90%;
-        padding: 10px;
-    }
-
-    #searchInput {
-        width: 100%;
-    }
-
-    button {
-        width: 100%;
-        padding: 12px;
-    }
-}
-
+ul#resultsList {
+    list-style
