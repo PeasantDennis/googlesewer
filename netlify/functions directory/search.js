@@ -22,11 +22,12 @@ async function searchWikipedia(query) {
     }
 }
 
-// DuckDuckGo Scraper
+// DuckDuckGo Scraper (Using Proxy)
 async function searchDuckDuckGo(query) {
     try {
-        const response = await fetch(`https://duckduckgo.com/html/?q=${encodeURIComponent(query)}`);
-        const text = await response.text();
+        const response = await fetch(`https://api.allorigins.win/get?url=${encodeURIComponent(`https://duckduckgo.com/html/?q=${query}`)}`);
+        const data = await response.json();
+        const text = data.contents;
 
         // Extract search results using DOM parsing
         const parser = new DOMParser();
