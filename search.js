@@ -73,13 +73,3 @@ flushBtn.addEventListener("click", async () => {
         flushBtn.disabled = false; // Re-enable after done
     }
 });
-
-    try {
-        await searchDuckDuckGo(query);
-        askPepeTreBtn.style.display = "block"; // Show Pepe Tre button after results load
-    } catch (error) {
-        console.warn("DuckDuckGo failed, switching to Wikipedia.");
-        await searchWikipedia(query);
-        askPepeTreBtn.style.display = "block"; // Show Pepe Tre button after Wikipedia fallback
-    }
-});
