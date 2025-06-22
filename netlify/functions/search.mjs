@@ -1,21 +1,8 @@
 // Select elements
-flushBtn.addEventListener("click", async () => {
-    const query = searchInput.value.trim();
-    if (!query) return;
-
-    resultsList.innerHTML = "<p>Flushing results...</p>";
-
-    try {
-        await searchDuckDuckGo(query);
-        askPepeTreBtn.style.display = "block"; // Show Pepe Tre button after results load
-    } catch (error) {
-        console.warn("DuckDuckGo failed, switching to Wikipedia.");
-        await searchWikipedia(query);
-        askPepeTreBtn.style.display = "block"; // Show Pepe Tre button after Wikipedia fallback
-    }
-});
+const flushBtn = document.getElementById("flushBtn");
 const searchInput = document.getElementById("searchInput");
 const resultsList = document.getElementById("resultsList");
+const askPepeTreBtn = document.getElementById("askPepeTre");
 
 // Wikipedia Backup Search
 async function searchWikipedia(query) {
@@ -41,7 +28,7 @@ async function searchDuckDuckGo(query) {
         const response = await fetch(`https://duckduckgo.com/html/?q=${encodeURIComponent(query)}`);
         const text = await response.text();
 
-        // Extract search results using regex
+        // Extract search results using DOM parsing
         const parser = new DOMParser();
         const doc = parser.parseFromString(text, "text/html");
         const results = doc.querySelectorAll(".result__title a");
@@ -74,8 +61,10 @@ flushBtn.addEventListener("click", async () => {
 
     try {
         await searchDuckDuckGo(query);
+        askPepeTreBtn.style.display = "block"; // Show Pepe Tre button after results load
     } catch (error) {
         console.warn("DuckDuckGo failed, switching to Wikipedia.");
         await searchWikipedia(query);
+        askPepeTreBtn.style.display = "block"; // Show Pepe Tre button after Wikipedia fallback
     }
 });
