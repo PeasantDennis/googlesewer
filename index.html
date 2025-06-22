@@ -3,34 +3,121 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Googlesewer</title>
+    <title>GOOGLESEWER - Municipal Search Terminal</title>
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <div class="container">
-        <h1>🕳️ Googlesewer</h1>
-        <p><em>Only the truth floaters rise.</em></p>
-
-        <input type="text" id="searchInput" placeholder="Type your search, then flush..." />
-        <button id="flushBtn">💩 FLUSH</button>
-
-        <div class="oracle-selection">
-            <h2>Consult an Oracle:</h2>
-            <button id="askCaptOne">Ask CAPT.ONE</button>
-            <button id="askBotTom">Ask BOT TOM</button>
-            <button id="askPepeTre" style="display: none;">Ask Pepe Tre</button> <!-- Hidden until search runs -->
+    <div class="terminal-container">
+        <div class="header-bar">
+            <div class="status-lights">
+                <span class="light red"></span>
+                <span class="light yellow"></span>
+                <span class="light green flickering"></span>
+            </div>
+            <div class="terminal-title">GOOGLESEWER v3.7.9 - MUNICIPAL WASTE INFORMATION SYSTEM</div>
+            <div class="timestamp" id="timestamp"></div>
         </div>
-
-        <ul id="resultsList"></ul>
+        
+        <div class="glitch-overlay"></div>
+        
+        <div class="main-content">
+            <div class="logo-section">
+                <div class="logo-text">
+                    <span class="letter-g">G</span>
+                    <span class="letter-o1">O</span>
+                    <span class="letter-o2">O</span>
+                    <span class="letter-g2">G</span>
+                    <span class="letter-l">L</span>
+                    <span class="letter-e">E</span>
+                    <span class="separator">⬢</span>
+                    <span class="letter-s">S</span>
+                    <span class="letter-e2">E</span>
+                    <span class="letter-w">W</span>
+                    <span class="letter-e3">E</span>
+                    <span class="letter-r">R</span>
+                </div>
+                <div class="subtitle">⚠ DECOMMISSIONED TERMINAL - SEARCH AT YOUR OWN RISK ⚠</div>
+            </div>
+            
+            <div class="search-section">
+                <div class="character-filters">
+                    <div class="filter-label">SELECT CONSCIOUSNESS FILTER:</div>
+                    <div class="character-buttons">
+                        <button class="character-btn active" data-character="default" id="defaultBtn">
+                            <div class="character-icon">🏗️</div>
+                            <div class="character-name">MUNICIPAL</div>
+                            <div class="character-subtitle">Standard Protocol</div>
+                        </button>
+                        <button class="character-btn" data-character="pepe" id="pepeBtn">
+                            <div class="character-icon">🧠</div>
+                            <div class="character-name">PEPE TRE</div>
+                            <div class="character-subtitle">Sewer Sage</div>
+                        </button>
+                        <button class="character-btn" data-character="capt" id="captBtn">
+                            <div class="character-icon">🛸</div>
+                            <div class="character-name">CAPT.ONE</div>
+                            <div class="character-subtitle">Military Oracle</div>
+                        </button>
+                        <button class="character-btn" data-character="bot" id="botBtn">
+                            <div class="character-icon">💬</div>
+                            <div class="character-name">BoT.ToM</div>
+                            <div class="character-subtitle">Textual Mystic</div>
+                        </button>
+                    </div>
+                </div>
+                <div class="search-container">
+                    <input type="text" id="searchInput" placeholder="ENTER QUERY TO FLUSH DATASTREAMS..." autocomplete="off">
+                    <button id="searchButton">FLUSH</button>
+                </div>
+                <div class="search-stats">
+                    <span id="searchCount">0</span> QUERIES PROCESSED | 
+                    <span id="dataCorruption">12.7%</span> DATA CORRUPTION DETECTED |
+                    FILTER: <span id="activeFilter">MUNICIPAL</span>
+                </div>
+            </div>
+            
+            <div class="results-section" id="resultsSection">
+                <div class="results-header">
+                    <div class="pipe-symbol">┃</div>
+                    <span>DATASTREAM OUTPUT</span>
+                    <div class="pipe-symbol">┃</div>
+                </div>
+                <div class="results-container" id="resultsContainer"></div>
+            </div>
+            
+            <div class="pepe-section" id="pepeSection" style="display: none;">
+                <div class="pepe-header">
+                    <div class="pepe-ascii">
+                        <pre>
+    ░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░
+    ░░░░░░░░░░▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄░░░░░░░░░░
+    ░░░░░░░▄▀░░░░░░░░░░░░▄░░░░░░░▀▄░░░░░░░
+    ░░░░░░▄▀░░░░░░░░░░░░▄██▄░░░░░░░▀▄░░░░░
+    ░░░░░▄▀░░▄▄▄░░░░░░░░▀██▀░░░░░░░░▀▄░░░
+    ░░░░░█░░░░▄░░░░░░░░░░░░░░░░░░░░░░░█░░░
+    ░░░▄▀░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░▀▄░
+    ░░▄▀░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░▀▄
+                        </pre>
+                    </div>
+                    <div class="pepe-title">PEPE TRE AWAKENS</div>
+                    <div class="pepe-subtitle">SEWER SAGE • PROPHETIC FRAGMENT • MEME POSSESSED</div>
+                </div>
+                <div class="pepe-output" id="pepeOutput"></div>
+            </div>
+        </div>
+        
+        <div class="footer-bar">
+            <div class="system-info">
+                SYS: LINUX_SEWER_EDITION | MEM: 666KB | SWAP: CORRUPTED | UPTIME: ∞ DAYS
+            </div>
+            <div class="warning-text">
+                ⚠ WARNING: THIS TERMINAL MAY CONTAIN TRACES OF DIGITAL ASBESTOS ⚠
+            </div>
+        </div>
     </div>
-
-    <!-- JavaScript Test -->
-    <script>
-        console.log("JavaScript is working!");
-    </script>
-
-    <!-- Load Scripts Without 'type=module' -->
+    
+    <div class="background-noise"></div>
     <script src="search.js"></script>
-    <script src="pepeTre.js"></script>
+    <script src="PepeTre.js"></script>
 </body>
 </html>
