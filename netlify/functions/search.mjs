@@ -3,42 +3,65 @@ const flushBtn = document.getElementById("flushBtn");
 const searchInput = document.getElementById("searchInput");
 const resultsList = document.getElementById("resultsList");
 
-// Oracle buttons
-const askCaptOneBtn = document.getElementById("askCaptOne");
-const askBotTomBtn = document.getElementById("askBotTom");
-const askPepeTreBtn = document.getElementById("askPepeTre");
+// Wikipedia Backup Search
+async function searchWikipedia(query) {
+    try {
+        const response = await fetch(`https://en.wikipedia.org/w/api.php?action=query&list=search&srsearch=${query}&format=json&origin=*`);
+        const data = await response.json();
 
-// Fake search results (until API is connected)
-const mockResults = [
-    { title: "Mainstream Mouthpiece Says Everything's Fine", link: "#" },
-    { title: "Same Story, Different Outlet", link: "#" },
-    { title: "Obscure Blog With Contrarian Stats", link: "#" },
-    { title: "Research Paper That No One Cited", link: "#" },
-    { title: "Satirical Truth-Bomb Disguised as Rant", link: "#" }
-];
+        resultsList.innerHTML = "";
+        data.query.search.slice(0, 5).forEach(result => {
+            const li = document.createElement("li");
+            li.innerHTML = `<a href="https://en.wikipedia.org/wiki/${result.title.replace(/ /g, '_')}" target="_blank">${result.title}</a>`;
+            resultsList.appendChild(li);
+        });
+    } catch (error) {
+        resultsList.innerHTML = "<p>Error fetching Wikipedia results. Try again later.</p>";
+        console.error("Wikipedia search error:", error);
+    }
+}
 
-// Flush function (search simulation)
-flushBtn.addEventListener("click", () => {
+// DuckDuckGo Scraper
+async function searchDuckDuckGo(query) {
+    try {
+        const response = await fetch(`https://duckduckgo.com/html/?q=${encodeURIComponent(query)}`);
+        const text = await response.text();
+
+        // Extract search results using regex
+        const parser = new DOMParser();
+        const doc = parser.parseFromString(text, "text/html");
+        const results = doc.querySelectorAll(".result__title a");
+
+        resultsList.innerHTML = "";
+        results.forEach((result, index) => {
+            if (index < 5) { // Limit to top 5 results
+                const li = document.createElement("li");
+                li.innerHTML = `<a href="https://duckduckgo.com${result.getAttribute("href")}" target="_blank">${result.textContent}</a>`;
+                resultsList.appendChild(li);
+            }
+        });
+
+        if (results.length === 0) {
+            resultsList.innerHTML = "<p>No results found. Try Wikipedia instead.</p>";
+            await searchWikipedia(query);
+        }
+    } catch (error) {
+        console.warn("DuckDuckGo scraping failed, switching to Wikipedia.");
+        await searchWikipedia(query);
+    }
+}
+
+// Modify Flush Button to Use DuckDuckGo First, Wikipedia as Backup
+flushBtn.addEventListener("click", async () => {
     const query = searchInput.value.trim();
     if (!query) return;
 
-    resultsList.innerHTML = "";
-    mockResults.forEach(result => {
-        const li = document.createElement("li");
-        li.innerHTML = `<a href="${result.link}" target="_blank">${result.title}</a>`;
-        resultsList.appendChild(li);
-    });
-});
+    resultsList.innerHTML = "<p>Flushing results...</p>";
 
-// Oracle functions (different filters)
-askCaptOneBtn.addEventListener("click", () => {
-    alert("CAPT.ONE says: 'Truth floats, but so does garbage. Choose wisely.'");
-});
-
-askBotTomBtn.addEventListener("click", () => {
-    alert("BOT TOM says: 'This one’s all feathers, no substance. Next.'");
-});
-
-askPepeTreBtn.addEventListener("click", () => {
-    alert("Pepe Tre says: 'Oi, bruz, this one’s cooked. But cooked don’t mean wrong.'");
+    try {
+        await searchDuckDuckGo(query);
+    } catch (error) {
+        console.warn("DuckDuckGo failed, switching to Wikipedia.");
+        await searchWikipedia(query);
+    }
 });
