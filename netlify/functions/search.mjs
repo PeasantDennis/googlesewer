@@ -1,64 +1,44 @@
-import fetch from 'node-fetch';
+// Select elements
+const flushBtn = document.getElementById("flushBtn");
+const searchInput = document.getElementById("searchInput");
+const resultsList = document.getElementById("resultsList");
 
-export async function handler(event) {
-  const query = event.queryStringParameters.q;
+// Oracle buttons
+const askCaptOneBtn = document.getElementById("askCaptOne");
+const askBotTomBtn = document.getElementById("askBotTom");
+const askPepeTreBtn = document.getElementById("askPepeTre");
 
-  if (!query) {
-    return {
-      statusCode: 400,
-      body: JSON.stringify({ error: "No search term provided" }),
-    };
-  }
+// Fake search results (until API is connected)
+const mockResults = [
+    { title: "Mainstream Mouthpiece Says Everything's Fine", link: "#" },
+    { title: "Same Story, Different Outlet", link: "#" },
+    { title: "Obscure Blog With Contrarian Stats", link: "#" },
+    { title: "Research Paper That No One Cited", link: "#" },
+    { title: "Satirical Truth-Bomb Disguised as Rant", link: "#" }
+];
 
-  const apiKey = "7869dd041ee71d017b26d1bac59b49182cc7e50db168eb3ec9005686b19fcaed";
+// Flush function (search simulation)
+flushBtn.addEventListener("click", () => {
+    const query = searchInput.value.trim();
+    if (!query) return;
 
-  let allResults = [];
-  let start = 0;
-
-  for (let page = 0; page < 10; page++) {
-    const url = `https://serpapi.com/search.json?q=${encodeURIComponent(query)}&api_key=${apiKey}&num=10&start=${start}`;
-    const response = await fetch(url);
-    const data = await response.json();
-
-    if (data.organic_results && data.organic_results.length > 0) {
-      allResults.push(...data.organic_results);
-    } else {
-      break;
-    }
-
-    start += 10;
-  }
-
-  const filtered = applyInversionFilters(allResults);
-
-  return {
-    statusCode: 200,
-    body: JSON.stringify({ results: filtered }, null, 2),
-  };
-}
-
-function applyInversionFilters(results) {
-  return results.map(result => {
-    const url = result.link || '';
-    const snippet = (result.snippet || '').toLowerCase();
-    const domain = new URL(url).hostname.replace(/^www\./, '');
-
-    let score = 0;
-
-    const egoTriggers = ["you won’t believe", "shocking", "revealed", "secret", "experts say"];
-    egoTriggers.forEach(trigger => {
-      if (snippet.includes(trigger)) score -= 2;
+    resultsList.innerHTML = "";
+    mockResults.forEach(result => {
+        const li = document.createElement("li");
+        li.innerHTML = `<a href="${result.link}" target="_blank">${result.title}</a>`;
+        resultsList.appendChild(li);
     });
+});
 
-    const ads = ["buy now", "sponsored", "sale"];
-    if (url.includes("/buy/") || url.includes("affiliate") || ads.some(t => snippet.includes(t))) {
-      score -= 3;
-    }
+// Oracle functions (different filters)
+askCaptOneBtn.addEventListener("click", () => {
+    alert("CAPT.ONE says: 'Truth floats, but so does garbage. Choose wisely.'");
+});
 
-    const goodDomains = ["medium.com", "substack.com", "archive.org", "theconversation.com"];
-    if (goodDomains.some(g => domain.endsWith(g))) score += 3;
-    if (domain.endsWith('.org') || domain.endsWith('.edu')) score += 2;
+askBotTomBtn.addEventListener("click", () => {
+    alert("BOT TOM says: 'This one’s all feathers, no substance. Next.'");
+});
 
-    return { ...result, score };
-  }).sort((a, b) => b.score - a.score); // truth on top
-}
+askPepeTreBtn.addEventListener("click", () => {
+    alert("Pepe Tre says: 'Oi, bruz, this one’s cooked. But cooked don’t mean wrong.'");
+});
